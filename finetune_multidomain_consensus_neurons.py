@@ -13,7 +13,7 @@ from multidomain_dataset import MultiDomainDataset
 from torch.utils.data import Dataset, Sampler, DataLoader, DistributedSampler
 from torch.utils.tensorboard import SummaryWriter
 
-MODEL_NAME = "/nas/llm/Qwen2.5-7B-Instruct"
+MODEL_NAME = "llm/Qwen2.5-7B-Instruct"
 
 global_devices = [i for i in range(torch.cuda.device_count())] if torch.cuda.device_count() >= 1 else ["cpu"]
 max_memory = {k: '40GB' for k in global_devices}
@@ -21,7 +21,7 @@ max_memory = {k: '40GB' for k in global_devices}
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=False, trust_remote_code=True)
 model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, device_map='balanced', torch_dtype=torch.bfloat16, max_memory=max_memory)
 
-tokenizer.pad_token = tokenizer.eos_token  # 设置填充token
+tokenizer.pad_token = tokenizer.eos_token
 
 src = "de"
 tgt = "en"
@@ -77,7 +77,7 @@ update_counter = 0
 path_to_save_model = "saves"
 
 
-for epoch in range(num_epochs):  # 假设训练 3 个 epoch
+for epoch in range(num_epochs):
     model.train()
     total_loss = 0
     dataloader_len = len(train_dataloader)

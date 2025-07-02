@@ -101,7 +101,7 @@ def remove_hook(hook_forwards, hook_backwards):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model_path', type=str, help='model path', default='Qwen2.5-7B-Instruct')
+    parser.add_argument('--model_path', type=str, help='model path', default='llm/Qwen2.5-7B-Instruct')
     parser.add_argument('--src', type=str, help='source language', default='de')
     parser.add_argument('--tgt', type=str, help='target language', default='en')
     
@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
     domain_code_list = ['it', 'law', 'med', 'sub']
     domain_code_list = ['edu', 'spok', 'thes']
-    domain_code_dict = {"it": "IT", "med": "medical", "koran": "Koran", "law": "law", "thes": "thesis", "sub": "subtitles", "spok": "spoken", "edu": "education"}
+    domain_code_dict = {"it": "IT", "med": "medical", "koran": "Koran", "law": "law", "thes": "thesis", "sub": "subtitles", "spok": "spoken", "edu": "education", "sci": "science", "blog": "microblog"}
 
     model_path = args.model_path
     tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False, trust_remote_code=True)

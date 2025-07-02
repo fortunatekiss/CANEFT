@@ -80,7 +80,7 @@ class MultiDomainDataset(Dataset):
                         shuffle_train.append({"src": self.lang_code_dict[src], "tgt": self.lang_code_dict[tgt], "sent1": line[0], "sent2": line[1], "domain": self.domain_code_dict[cur_domain_code]})    
                 
                 random.shuffle(shuffle_train) 
-                shuffle_train = shuffle_train[:10000] #for 4 domains de-en
+                shuffle_train = shuffle_train[:8000] #for 4 domains de-en
                 # shuffle_train = shuffle_train[:6000] #for 3 domains zh-en
 
                 shuffle_train_save = []
