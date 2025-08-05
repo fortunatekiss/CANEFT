@@ -5,14 +5,14 @@ import pickle
 import torch.optim as optim
 from tqdm import tqdm
 import os
-import argparse # Import argparse
+import argparse
 from multidomain_dataset import MultiDomainDataset
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 
 def main():
     # --- Argument Parsing ---
-    parser = argparse.ArgumentParser(description="Fine-tune a language model with selective MLP neuron training.")
+    parser = argparse.ArgumentParser(description="Fine-tune a language model with selective multi-domian consensus-algined neuron training.")
 
     parser.add_argument('--model_name', type=str, default="llms/Qwen2.5-7B-Instruct",
                         help='Hugging Face model ID or local path to the model.')

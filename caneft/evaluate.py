@@ -111,7 +111,7 @@ def main():
     parser.add_argument('--output_prefix', type=str, default='trans_results',
                         help='Prefix directory for saving translation results.')
     parser.add_argument('--domains', nargs='+', type=str,
-                        default=['it', 'koran', 'law', 'med', 'the', 'edu', 'spok'],
+                        default=['it', 'koran', 'law', 'med', 'sub'], #for zh-en, ['edu', 'spok', 'thes', 'sci', 'blog']
                         help='List of domains to evaluate (e.g., it law med).')
     parser.add_argument('--batch_size', type=int, default=1,
                         help='Batch size for inference. Note: currently optimized for batch_size=1 due to prompt handling.')

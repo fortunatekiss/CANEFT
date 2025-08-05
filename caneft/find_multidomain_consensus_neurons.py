@@ -28,7 +28,7 @@ def find_all_target_modules(model: torch.nn.Module) -> list[str]:
     """
     target_module_name_list = []
     for name, module in model.named_modules():
-        if len(module._parameters) > 0: # Check if the module has parameters directly
+        if len(module._parameters) > 0: # Check if the module is mlp module
             if "mlp" in name:
                 target_module_name_list.append(name)
     print(f"Identified target MLP modules: {target_module_name_list}")
@@ -135,14 +135,14 @@ def main():
                         help='Source language code (e.g., "de", "en").')
     parser.add_argument('--tgt_lang', type=str, default='en',
                         help='Target language code (e.g., "en", "de").')
-    parser.add_argument('--data_prefix', type=str, default='data/high_quality',
-                        help='Path prefix to the data directory (e.g., "data/high_quality").')
+    parser.add_argument('--data_prefix', type=str, default='data',
+                        help='Path prefix to the data directory (e.g., "data").')
     parser.add_argument('--output_dir', type=str, default='neurons',
                         help='Directory to save the mutual information scores pickle file.')
     parser.add_argument('--domains', nargs='+', type=str, 
-                        default=['it', 'law', 'med', 'sub', 'edu', 'spok', 'thes'], # Combined common domains
+                        default=['it', 'law', 'med', 'sub'], # Combined common domains, for zh-en, ['edu', 'spok', 'thes']
                         help='List of domains to process (e.g., it law med sub).')
-    parser.add_argument('--max_samples_per_domain', type=int, default=1000,
+    parser.add_argument('--max_samples_per_domain', type=int, default=10000,
                         help='Maximum number of samples to process per domain to limit computation time.')
 
     args = parser.parse_args()
@@ -260,7 +260,6 @@ def main():
             # Calculate and store (activation * gradient) for each target module
             # Note: backward_cache accumulates in reverse order of forward_cache
             for k, cur_module_name in enumerate(target_module_names):
-                # Ensure caches are not empty and indices are valid
                 if k < len(forward_cache) and (len(backward_cache) - 1 - k) >= 0:
                     activation = forward_cache[k]
                     gradient = backward_cache[len(backward_cache) - 1 - k] # Get corresponding gradient
@@ -284,13 +283,13 @@ def main():
 
     # Remove hooks after all data has been processed
     remove_hook(hook_forwards, hook_backwards)
-    del forward_cache, backward_cache # Clear global caches
+    del forward_cache, backward_cache
 
     # --- Mutual Information Calculation ---
     reshape_importance_matrix = {key: [] for key in target_module_names}
     mi_scores_multi_domain = {key: [] for key in target_module_names}
 
-    # Construct domain labels: 0 for first domain, 1 for second, etc.
+    # Construct domain labels simply: 0 for first domain, 1 for second, etc.
     # The domain_data_count must align with the order of DOMAIN_CODE_LIST
     domain_labels = np.zeros(sum(domain_data_count), dtype=int)
     current_idx = 0

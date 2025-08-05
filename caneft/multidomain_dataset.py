@@ -48,8 +48,8 @@ class MultiDomainDataset(Dataset):
         shuffle_train = []
 
         if split == "train":
-            few_data_path = "data/high_quality/shuf.all-domain.de-en.json"
-            # few_data_path = "data/high_quality_zhen/shuf.all-domain.zh-en.json"
+            few_data_path = "data/shuf.all-domain.de-en.2k.json"
+            # few_data_path = "data/shuf.all-domain.zh-en.2k.json"
             if os.path.exists(few_data_path):
                 with open(few_data_path, 'r', encoding='utf-8') as f:
                     content = json.load(f)
@@ -57,15 +57,15 @@ class MultiDomainDataset(Dataset):
                 if is_random:
                     random.shuffle(content)
                     content = content[:random_num]
-                    with open(f"data/high_quality/shuf.all-domain.de-en.{random_num}.json", 'w', encoding="utf-8") as f:
+                    with open(f"data/shuf.all-domain.de-en.{random_num}.json", 'w', encoding="utf-8") as f:
                         json.dump(content, f, ensure_ascii=False, indent=4)
 
                 for line in content:
                     shuffle_train.append({"src": self.lang_code_dict[src], "tgt": self.lang_code_dict[tgt], "sent1": line["input"], "sent2": line["output"], "domain": line["instruction"].split()[15]})
             else:
                 for cur_domain_code in self.domain_code_list:
-                    # file_path = f"data/high_quality_zhen/shuf.{cur_domain_code}.train.{src}-{tgt}.jsonl"
-                    file_path = f"data/high_quality/shuf.{cur_domain_code}.train.{src}-{tgt}.jsonl"
+                    # file_path = f"data/shuf.{cur_domain_code}.train.{src}-{tgt}.jsonl"
+                    file_path = f"data/shuf.{cur_domain_code}.train.{src}-{tgt}.jsonl"
                     
                     with open(file_path, 'r', encoding='utf-8') as f:
                         lines = f.readlines()
@@ -91,13 +91,13 @@ class MultiDomainDataset(Dataset):
                         }
                     shuffle_train_save.append(content)
                     
-                with open("data/high_quality/shuf.all-domain.de-en.json", "w", encoding='utf-8') as f:
-                # with open("data/high_quality_zhen/shuf.all-domain.zh-en.json", "w", encoding='utf-8') as f:
+                with open("data/shuf.all-domain.de-en.2k.json", "w", encoding='utf-8') as f:
+                # with open("data/shuf.all-domain.zh-en.2k.json", "w", encoding='utf-8') as f:
                     json.dump(shuffle_train_save, f, ensure_ascii=False, indent=4)
         elif split == "dev":
             for cur_domain_code in self.domain_code_list:
-                # file_path = f"data/high_quality_zhen/{cur_domain_code}.dev.{src}-{tgt}.jsonl"
-                file_path = f"data/high_quality/{cur_domain_code}.dev.{src}-{tgt}.jsonl"
+                # file_path = f"data/{cur_domain_code}.dev.{src}-{tgt}.jsonl"
+                file_path = f"data/{cur_domain_code}.dev.{src}-{tgt}.jsonl"
                 with open(file_path, 'r', encoding='utf-8') as f:
                     lines = f.readlines()
                 
