@@ -99,7 +99,7 @@ python -m caneft.evaluate \
 If you use this code, please cite our paper:
 
 ```bibtex
-@article{CANEFT2024,
+@article{CANEFT2025,
   title={Consensus-Aligned Neuron Efficient Fine-Tuning Large Language Models for Multi-Domain Machine Translation},
   author={},
   journal={},
